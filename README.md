@@ -18,7 +18,7 @@
 
 <br>
 
-> When it comes to genome analysis, you can choose out of three different images, depending on your needs and the data you have available. Here is a brief explanation for each one of them:
+> When it comes to transcriptome analysis, you can choose out of three different images, depending on your needs. Here is a brief explanation for each one of them:
 
 <br>
 
@@ -29,7 +29,7 @@
 
 **A. SQTQ**
 
-> Short Quality-Trimming-Quality (SQTQ) is an image suitable for those who want to run a simple quality control for their short (Illumina) reads, before and after trimming them, when planning to use long and short reads combination for assembling a genome. It actually performs quality check on the raw data, trimming of the raw data and quality check all over again. The results of the image are the following, located in the same directory your raw data live in:
+> Short Quality-Trimming-Quality (SQTQ) is an image suitable for those who want to run a simple quality control for their short (Illumina) reads, before and after trimming them. It actually performs quality check on the raw data, trimming of the raw data and quality check all over again. The results of the image are the following, located in the same directory your raw data live in:
 
 1. One directory that contains the now trimmed short data, named *trimmomatic_output*
 2. One directory that contains the results of the quality control of the raw short reads, named *Multiq_raw_report*
@@ -48,98 +48,44 @@
 ***
 **B. TransA**
 
-> Long Quality-Trimming-Quality (LQTQ) is an image suitable for those who want to run a simple quality control for their long (MinION) reads, before and after trimming them. It actually performs quality check, trimming of the raw data and quality check all over again. The results of the image are again, the following three, located in the same directory your long, raw data live in:
+> Transcriptome Assembly (TransA) performs assemblying with the R1 and R2 trimmed reads, and after that, calculates some stats for the assebly and quality-checks it through BUSCO. The results of the image are the following, located in the same directory your raw data live in:
 
-1. One fastq file that contains the now trimmed data, named *porechop_output.fastq.gz*
-2. One directory that contains the results of the quality control before trimming, named *Nano_Raw_Report*
-3. One directory that contains the results of the quality control after the trimming, named *Nano_Trimmed_Report*
+1. One 
+2. One directory 
+3. One directory 
 
 > Here are the tools used for this analysis:
 
 | Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
-| NanoPlot     | Quality check | 1.29.0 |
-| Porechop    | Trimming     |  0.2.3 |
+| Trinity     | Assembly | 2.8.5 |
+| Samtools    | Used for stats and analyzations.     |  1.9 |
+| Busco    | Quality check     |  3.0 (Internal Blast: v2.2) |
+
 
 <br>
 
 ***
 
 
-**C. TransAM**
+**C. TransGM**
 
-> Long Genome Assembly (LGA) is an image suitable for those who want to run a whole genome assembly analysis from start to end, and got only long (MinION) reads at their disposal. Here are the main tools used by the pipeline, and all the results the image is spawning: 
->> LQTQ is part of LGA
+> Transcriptome Gene Matrix (TransGM) is an image suitable for larger analysis. It contains both SQTQ and TransA analyses, and adds extra steps, which are an alignment and abundance estimation through Bowtie2 and RSEM, and a Gene Matrix construction through the latter. Here are the main tools used by the pipeline, and all the results the image is spawning: 
 
-1. One fastq file that contains the now trimmed data, named *porechop_output.fastq.gz*
-2. One directory that contains the results of the quality control before trimming, named *Nano_Raw_Report*
-3. One directory that contains the results of the quality control after the trimming, named *Nano_Trimmed_Report*
-4. One directory called *Assemblies*, which will actually contain all the assemblies made through the procedure and polishing steps alongside the final assembly. It contains the following subfolders and files:
-* (DIR) Flye: A folder containing the new assembly called *assembly.fasta*, and other side files.
-* (DIR) Racon: A folder containing the (compressed) results and side files (s.a. .mmi files) for running Racon. These results, have a prefix or suffix (x), where (x) is a number and depends on the polishing rounds you've demanded in the configuration file. If for example your hyperparameter is 2, you will find four such files: 1_minimap.sam and 2_minimap.sam, racon_1.fasta, and racon_consensus.fasta. The last file is the final result of this part, has the string "consensus" rather than a number, and serves as input to Medaka.
-* (DIR) (Lineage_name): A folder containing information about the lineage used for the BUSCO analysis below. (e.g.*actinopterygii_odb9*)
-* (F) The .tar form of the above lineage folder.
-* (DIR) Medaka: A folder containing the final, fully polished assembly called *consensus.fasta*, and other side files.
-5. One directory that contains the results of the BUSCO quality controls after each assembly creation, named *Busco_Results*. It contains two subfolders, *QA_1* and *QA_1*, for *assembly.fasta* and for *consensus.fasta* respectively.
-6. One directory that contains the results of the QUAST quality controls after each assembly creation, named *Quast_Results*. It contains two subfolders, *QA_1* and *QA_2*, for *assembly.fasta* and for *consensus.fasta* respectively.
-7. A pdf in the same directory with the image, with a directed acyclic graph (DAG) generated by it, which shows the dependencies and input-outputs of the jobs of the image for you to check and use as you like.
-8. A .txt file named "Summary.txt", which contains information about the completeness of the files generated by the pipeline. 
+1. One file 
+2. One directory 
 
 
 | Tools       | Description        | Version |
 | ------------- |:-------------:| -----:|
-| NanoPlot     | Quality check | 1.29.0 |
-| Porechop    | Trimming     | 0.2.3  |
-| Flye   | Assembler  |  2.6 |
+| Trinity     | Assembly | 2.8.5 |
+| Samtools    | Used for stats and analyzations.     |  1.9 |
 | Busco    | Quality check     |  3.0 (Internal Blast: v2.2) |
-| Quast   | Quality check     |  5.0.2 |
-| Racon   | Polishing     |  1.4.3 |
-| Medaka   | Polishing    | 0.9.2  |
+| Bowtie2    |      |   |
+| RSEM    |      |   |
 
 
-<br>
 
-***
-
-**D. LSGA**
-
-> Long-Short Genome Assembly (LSGA) is an image suitable for those who want to run a whole genome assembly analysis from start to end, and got both long (MinION) reads and short (Illumina) reads at their disposal. Here are the tools and all the results the image is spawning: 
->> All the other images are part of LSGA.
- 
-
-1. One directory that contains the now trimmed short data, named *trimmomatic_output*
-2. A directory called *KmerGenie* inside the trimmomatic_output dir, generated by the KmerGenie program and informing about the **estimated genome size** for the assembly and the kmers of the data, used later as parameter for the Flye Assembler.
-3. One directory that contains the results of the quality control before trimming the short reads, named *Multiq_raw_report*
-4. One directory that contains the results of the quality control after trimming the short reads, named *Multiq_trimmed_report*
-5. One fastq file that contains the now trimmed data, named *porechop_output.fastq.gz*
-6. One directory that contains the results of the quality control before trimming, named *Nano_Raw_Report*
-7. One directory that contains the results of the quality control after the trimming, named *Nano_Trimmed_Report*
-8. One directory called *Assemblies*, which will actually contain all the assemblies made through the procedure and polishing steps alongside the final assembly. It contains the following subfolders and files:
-* (DIR) Flye: A folder containing the new assembly called *assembly.fasta*, and other side files.
-* (DIR) Racon: A folder containing the (compressed) results and side files (s.a. .mmi files) for running Racon. These results, have a prefix or suffix (x), where (x) is a number and depends on the polishing rounds you've demanded in the configuration file. If for example your hyperparameter is 2, you will find four such files: 1_minimap.sam and 2_minimap.sam, racon_1.fasta, and racon_consensus.fasta. The last file is the final result of this part, has the string "consensus" rather than a number, and serves as input to Medaka.
-* (DIR) (Lineage_name): A folder containing information about the lineage used for the BUSCO analysis below. (e.g.*actinopterygii_odb9*)
-* (F) The .tar form of the above lineage folder.
-* (DIR) Medaka: A folder containing the final, fully polished assembly called *consensus.fasta*, and other side files.
-* (DIR) One directory called *Pilon_Results*, which contains all the Pilon results, also with an iteration prefix. The number of iterations is decided based on whether the polishing rounds are advancing the quality of the assembly or not. Specifically, a quality control (BUSCO and QUAST) is made after each polishing round. If the "Missing BUSCOs" are at least 5 lesser than the previous round, **and** the Quast's N50 is lowering by at least 500.000bp, the polishing is continued. If these conditions are not fulfilled anymore, the polishing is terminated. The final, fully polished assembly given to the user, is called *final.fasta* and can be found in this directory.
-9. One directory that contains the results of the BUSCO quality controls after each assembly creation, named *Busco_Results*. It contains two standard subfolders, *QA_1* and *QA_2*, for *assembly.fasta* and for *consensus.fasta* respectively, and one more for each Pilon round, whith a suffix for the respected iteration.
-10. One directory that contains the results of the QUAST quality controls after each assembly creation, named *Quast_Results*. It contains two standard subfolders, *QA_1* and *QA_2*, for *assembly.fasta* and for *consensus.fasta* respectively, and one more for each Pilon round, whith a suffix for the respected iteration.
-11. A pdf in the same directory with the image, with a directed acyclic graph (DAG) generated by it, which show the dependencies and input-outputs of the jobs of the image for you to check and use as you like.
-12. A .txt file named "Summary.txt", which contains information about the completeness of the files generated by the pipeline. 
-
-
-| Tools       | Description        | Version |
-| ------------- |:-------------:| -----:|
-| fastqc     | Quality check | 0.11.8 |
-| Trimmomatic     | Trimming | 0.39 |
-| Multiqc     | Quality check | 1.6 |
-| NanoPlot     | Quality check | 1.29.0 |
-| Porechop    | Trimming     | 0.2.3  |
-| Flye   | Assembler  |  2.6 (Internal: KmerGenie: v1.70.16)|
-| Busco    | Quality check     |  3.0 (Internal Blast: v2.2) |
-| Quast   | Quality check     |  5.0.2 |
-| Racon   | Polishing     |  1.4.3 |
-| Medaka   | Polishing    | 0.9.2  |
-| Pilon  | Polishing    |  1.23 (Internal: Samtools: v1.9, Minimap2: v2.17)|
 
 <br>
 
@@ -160,7 +106,7 @@
 singularity run <image.simg>
 ```
 > When the workflow is done, check carefully if all the files that should have been spawned are present in your directories, as and their status in the *Summary.txt* file. Ignore any other file mentioned, that may be spawned intermediately and has already been deleted by the workflow a priori. 
->> Note: The LGA and (especially) LSGA pipelines spawn a lot of files and data. Bare in mind that you should have enough space before running them in your repositories. The needed space varies, because the round of for example the Pilon rounds are not predetermined, and thus the number of outputs is not known a priori. 
+>> Note: The pipelines spawn a lot of files and data. Bare in mind that you should have enough space before running them in your repositories. The needed space varies, and depends on things such as the amount and sizeof your initial data. 
 
 ***
 #### Pipelines:
@@ -177,16 +123,9 @@ singularity run <image.simg>
 > * Bolger, A. M., Lohse, M., & Usadel, B. (2014). Trimmomatic: A flexible trimmer for Illumina Sequence Data. Bioinformatics, btu170. <br>
 > * Philip Ewels, Måns Magnusson, Sverker Lundin, Max Käller, MultiQC: summarize analysis results for multiple tools and samples in a single report, Bioinformatics, Volume 32, Issue 19, 1 October 2016, Pages 3047–3048. <br>
 > * Wouter De Coster, Svenn D’Hert, Darrin T Schultz, Marc Cruts, Christine Van Broeckhoven, NanoPack: visualizing and processing long-read sequencing data, Bioinformatics, Volume 34, Issue 15, 01 August 2018, Pages 2666–2669. <br>
-> * R. Wick, Porechop (2017), GitHub Repo: P.W.D. Charles, Project Title, (2013), GitHub repository: https://github.com/rrwick/Porechop. <br>
-> * Kolmogorov, M., Yuan, J., Lin, Y. et al. Assembly of long, error-prone reads using repeat graphs. Nat Biotechnol 37, 540–546 (2019).
-> * Heng Li, Minimap2: pairwise alignment for nucleotide sequences, Bioinformatics, Volume 34, Issue 18, 15 September 2018, Pages 3094–3100. <br>
 > * Li H, Handsaker B, Wysoker A, et al. The Sequence Alignment/Map format and SAMtools. Bioinformatics. 2009;25(16):2078‐2079.
-> * Vaser R, Sović I, Nagarajan N, Šikić M. Fast and accurate de novo genome assembly from long uncorrected reads. Genome Res. 2017;27(5):737‐746. <br>
-> * Oxford Nanopore Technologies, Medaka 2018, GitHub repository: https://github.com/nanoporetech/medaka <br>
-> * Bruce J. Walker, Thomas Abeel, Terrance Shea, Margaret Priest, Amr Abouelliel, Sharadha Sakthikumar, Christina A. Cuomo, Qiandong Zeng, Jennifer Wortman, Sarah K. Young, Ashlee M. Earl (2014) Pilon: An Integrated Tool for Comprehensive Microbial Variant Detection and Genome Assembly Improvement. PLoS ONE 9(11): e112963. <br>
-> * Gurevich A, Saveliev V, Vyahhi N, Tesler G. QUAST: quality assessment tool for genome assemblies. Bioinformatics. 2013;29(8):1072‐1075. <br>
-> * Felipe A. Simão, Robert M. Waterhouse, Panagiotis Ioannidis, Evgenia V. Kriventseva, Evgeny M. Zdobnov, BUSCO: assessing genome assembly and annotation completeness with single-copy orthologs, Bioinformatics, Volume 31, Issue 19, 1 October 2015, Pages 3210–3212. <br>
-> * Rayan Chikhi, Paul Medvedev, Informed and automated k-mer size selection for genome assembly, Bioinformatics, Volume 30, Issue 1, 1 January 2014, Pages 31–37. <br>
+> * Felipe A. Simão, Robert M. Waterhouse, Panagiotis Ioannidis, Evgenia V. Kriventseva, Evgeny M. Zdobnov, BUSCO: assessing 
+genome assembly and annotation completeness with single-copy orthologs, Bioinformatics, Volume 31, Issue 19, 1 October 2015, Pages 3210–3212. <br>
 
 
 #### Please credit accordingly:
