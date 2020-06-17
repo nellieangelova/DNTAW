@@ -48,11 +48,15 @@
 ***
 **B. TransA**
 
-> Transcriptome Assembly (TransA) performs assemblying with the R1 and R2 trimmed reads, and after that, calculates some stats for the assebly and quality-checks it through BUSCO. The results of the image are the following, located in the same directory your raw data live in:
+> Transcriptome Assembly (TransA) performs assemblying with the R1 and R2 trimmed reads, and after that, calculates some stats for the assembly and quality-checks it through BUSCO. The results of the image are the following, located in the same directory your raw data live in:
 
-1. One 
-2. One directory 
-3. One directory 
+1. One directory called *Assembly*, which contains:
+* A directory named *Trinity*, which holds the final assembly called *Trinity.fasta* and several side files generated through Trinity during assembling.
+* A txt file called *Stats.txt* with informations about the assembly's statistics.
+* A directory called *Busco_Results* with the BUSCO's spawned files and results during quality checking.
+* A directory of the lineage downloaded and used for BUSCO analysis in both untared and tar forms. 
+
+<br>
 
 > Here are the tools used for this analysis:
 
@@ -72,8 +76,13 @@
 
 > Transcriptome Gene Matrix (TransGM) is an image suitable for larger analysis. It contains both SQTQ and TransA analyses, and adds extra steps, which are an alignment and abundance estimation through Bowtie2 and RSEM, and a Gene Matrix construction through the latter. Here are the main tools used by the pipeline, and all the results the image is spawning: 
 
-1. One file 
-2. One directory 
+1. One directory called *Assembly*, which contains:
+* A directory named *Trinity*, which holds the final assembly called *Trinity.fasta* and several side files generated through Trinity during assembling and through Rsem and Bowtie2 in a later alignment and abundance estimation.
+* A txt file called *Stats.txt* with informations about the assembly's statistics.
+* A directory called *Busco_Results* with the BUSCO's spawned files and results during quality checking.
+* A directory of the lineage downloaded and used for BUSCO analysis in both untared and tar forms. 
+* A directory called Rsem with the results of the alignment and abundance estimation for each sample.
+2. One directory called Gene_Matrix with the constructed gene matrix through Rsem and side files. 
 
 
 | Tools       | Description        | Version |
@@ -81,8 +90,7 @@
 | Trinity     | Assembly | 2.8.5 |
 | Samtools    | Used for stats and analyzations.     |  1.9 |
 | Busco    | Quality check     |  3.0 (Internal Blast: v2.2) |
-| Bowtie2    |      |   |
-| RSEM    |      |   |
+| RSEM    |  Coupled with Trinity    |  1.3.3 |
 
 
 
