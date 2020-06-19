@@ -48,13 +48,13 @@
 ***
 **B. TransA**
 
-> Transcriptome Assembly (TransA) performs assemblying with the R1 and R2 trimmed reads, and after that, calculates some stats for the assembly and quality-checks it through BUSCO. The results of the image are the following, located in the same directory your raw data live in:
+> Transcriptome Assembly (TransA) performs assembling with the R1 and R2 trimmed reads, and after that, calculates some stats for the assembly and quality-checks it through BUSCO. The results of the image are the following, located in the same directory your raw data live in:
 
 1. One directory called *Assembly*, which contains:
-* A directory named *Trinity*, which holds the final assembly called *Trinity.fasta* and several side files generated through Trinity during assembling.
-* A txt file called *Stats.txt* with informations about the assembly's statistics.
+* A directory named *Trinity*, which holds the final assembly called *Trinity.fasta* and several side files generated through during the process.
+* A .txt file called *Stats.txt* with information about the assembly's statistics.
 * A directory called *Busco_Results* with the BUSCO's spawned files and results during quality checking.
-* A directory of the lineage downloaded and used for BUSCO analysis in both untared and tar forms. 
+* A directory of the lineage downloaded and used in the BUSCO analysis, in both untared and tar forms. 
 
 <br>
 
@@ -74,15 +74,16 @@
 
 **C. TransGM**
 
-> Transcriptome Gene Matrix (TransGM) is an image suitable for larger analysis. It contains both SQTQ and TransA analyses, and adds extra steps, which are an alignment and abundance estimation through Bowtie2 and RSEM, and a Gene Matrix construction through the latter. Here are the main tools used by the pipeline, and all the results the image is spawning: 
+> Transcriptome Gene Matrix (TransGM) is an image suitable for larger analyses. It contains both SQTQ and TransA parts, and adds extra steps, which are an alignment and abundance estimation through Bowtie2 and RSEM, and a Gene Matrix construction through the latter, that can be later used for a downstream analyses as suitable (e.g. Differential Expression).
+Here are the main tools used by the pipeline, and all the results the image is spawning: 
 
 1. One directory called *Assembly*, which contains:
 * A directory named *Trinity*, which holds the final assembly called *Trinity.fasta* and several side files generated through Trinity during assembling and through Rsem and Bowtie2 in a later alignment and abundance estimation.
 * A txt file called *Stats.txt* with informations about the assembly's statistics.
 * A directory called *Busco_Results* with the BUSCO's spawned files and results during quality checking.
 * A directory of the lineage downloaded and used for BUSCO analysis in both untared and tar forms. 
-* A directory called Rsem with the results of the alignment and abundance estimation for each sample.
-2. One directory called Gene_Matrix with the constructed gene matrix through Rsem and side files. 
+* A directory called *Rsem* with the results of the alignment and abundance estimation for each sample.
+2. One directory called *Gene_Matrix* with the constructed gene matrix and some side files. 
 
 
 | Tools       | Description        | Version |
@@ -114,7 +115,7 @@
 singularity run <image.simg>
 ```
 > When the workflow is done, check carefully if all the files that should have been spawned are present in your directories, as and their status in the *Summary.txt* file. Ignore any other file mentioned, that may be spawned intermediately and has already been deleted by the workflow a priori. 
->> Note: The pipelines spawn a lot of files and data. Bare in mind that you should have enough space before running them in your repositories. The needed space varies, and depends on things such as the amount and sizeof your initial data. 
+>> Note: The pipelines spawn a lot of files and data. Bare in mind that you should have enough space before running them in your repositories. The needed space varies, and depends on things such as the amount and size of your initial data. 
 
 ***
 #### Pipelines:
@@ -130,10 +131,12 @@ singularity run <image.simg>
 > * Andrews S. (2010). FastQC: a quality control tool for high throughput sequence data. Available online at: http://www.bioinformatics.babraham.ac.uk/projects/fastqc. <br>
 > * Bolger, A. M., Lohse, M., & Usadel, B. (2014). Trimmomatic: A flexible trimmer for Illumina Sequence Data. Bioinformatics, btu170. <br>
 > * Philip Ewels, Måns Magnusson, Sverker Lundin, Max Käller, MultiQC: summarize analysis results for multiple tools and samples in a single report, Bioinformatics, Volume 32, Issue 19, 1 October 2016, Pages 3047–3048. <br>
-> * Wouter De Coster, Svenn D’Hert, Darrin T Schultz, Marc Cruts, Christine Van Broeckhoven, NanoPack: visualizing and processing long-read sequencing data, Bioinformatics, Volume 34, Issue 15, 01 August 2018, Pages 2666–2669. <br>
+> * Grabherr, Manfred G et al. “Full-length transcriptome assembly from RNA-Seq data without a reference genome.” Nature biotechnology vol. 29,7 644-52. 15 May. 2011, doi:10.1038/nbt.1883 <br>
 > * Li H, Handsaker B, Wysoker A, et al. The Sequence Alignment/Map format and SAMtools. Bioinformatics. 2009;25(16):2078‐2079.
 > * Felipe A. Simão, Robert M. Waterhouse, Panagiotis Ioannidis, Evgenia V. Kriventseva, Evgeny M. Zdobnov, BUSCO: assessing 
 genome assembly and annotation completeness with single-copy orthologs, Bioinformatics, Volume 31, Issue 19, 1 October 2015, Pages 3210–3212. <br>
+> * Li, B., Dewey, C.N. RSEM: accurate transcript quantification from RNA-Seq data with or without a reference genome. BMC Bioinformatics 12, 323 (2011). https://doi.org/10.1186/1471-2105-12-323<br>
+
 
 
 #### Please credit accordingly:
