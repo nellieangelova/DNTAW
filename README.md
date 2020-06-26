@@ -1,5 +1,4 @@
 
-![SnakeCube](/SnakeCube.png) 
 
 # **De-Novo Transcriptome Assembly Containerized Pipelines**
 
