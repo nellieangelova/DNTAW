@@ -1,3 +1,6 @@
+
+[SnakeCube](/SnakeCube.png) 
+
 # **De-Novo Transcriptome Assembly Containerized Pipelines**
 
 ## Welcome to your ultimate guide for using ready to go, containerized workflows for analyzing transcriptome data.
